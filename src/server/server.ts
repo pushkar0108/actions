@@ -1,6 +1,7 @@
 import * as express from "express"
 import * as fs from "fs"
-import * as cors from "cors"
+// import * as cors from "cors"
+var cors = require('cors');
 import * as path from "path"
 import * as Raven from "raven"
 import * as winston from "winston"
