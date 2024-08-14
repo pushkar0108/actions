@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/index",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node -- ./src/boot.ts",
+    "start-original": "./node_modules/.bin/ts-node -- ./src/boot.ts",
+    "start": "npm run dev",
     "generate-api-key": "./node_modules/.bin/ts-node ./bin/generate_key.ts",
     "copy-api-types": "./node_modules/.bin/ts-node ./bin/copy_api_types.ts",
     "build": "rm -rf lib; ./node_modules/.bin/tsc -d -p tsconfig.npm.json",
