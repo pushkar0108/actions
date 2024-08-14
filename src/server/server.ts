@@ -86,6 +86,7 @@ export default class Server implements Hub.RouteBuilder {
   constructor() {
 
     this.app = express()
+    
     this.app.use(cors())
     this.app.use(express.json({limit: "250mb"}))
     this.app.use(expressWinston.logger({
