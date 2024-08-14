@@ -64,3 +64,5 @@ typings/
 
 # ActionHub specifics
 status.json
+
+package-lock.json
