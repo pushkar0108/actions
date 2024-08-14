@@ -14,6 +14,9 @@ export class SFTPAction extends Hub.Action {
   params = []
 
   async execute(request: Hub.ActionRequest) {
+    console.log("pushkar ------ request: ", request);
+
+
     return new Promise<Hub.ActionResponse>(async (resolve, reject) => {
 
       if (!request.attachment || !request.attachment.dataBuffer) {
@@ -21,15 +24,17 @@ export class SFTPAction extends Hub.Action {
         return
       }
 
+      console.log("pushkar ------ request.formParams: ", request.formParams);
+
       if (!request.formParams.address) {
-        reject("Needs a valid SFTP address.")
+        reject("Needs a valid SFTP address. [1]")
         return
       }
 
       const client = await this.sftpClientFromRequest(request)
       const parsedUrl = new URL(request.formParams.address)
       if (!parsedUrl.pathname) {
-        throw "Needs a valid SFTP address."
+        throw "Needs a valid SFTP address. [2]"
       }
       const data = request.attachment.dataBuffer
       const fileName = request.formParams.filename || request.suggestedFilename()
@@ -72,7 +77,7 @@ export class SFTPAction extends Hub.Action {
     const client = new Client()
     const parsedUrl = new URL(request.formParams.address!)
     if (!parsedUrl.hostname) {
-      throw "Needs a valid SFTP address."
+      throw "Needs a valid SFTP address. [3]"
     }
     try {
       await client.connect({
@@ -88,3 +93,5 @@ export class SFTPAction extends Hub.Action {
   }
 
 }
+
+Hub.addAction(new SFTPAction())

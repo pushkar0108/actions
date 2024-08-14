@@ -7,12 +7,12 @@ import * as Hub from "../hub"
 import {DelegateOAuthAction, isDelegateOauthAction, isOauthAction, OAuthAction} from "../hub"
 import * as ExecuteProcessQueue from "../xpc/execute_process_queue"
 import * as ExtendedProcessQueue from "../xpc/extended_process_queue"
-import * as apiKey from "./api_key"
+// import * as apiKey from "./api_key"
 const expressWinston = require("express-winston")
 const uparse = require("url")
 const blocked = require("blocked-at")
 
-const TOKEN_REGEX = new RegExp(/[T|t]oken token="(.*)"/)
+// const TOKEN_REGEX = new RegExp(/[T|t]oken token="(.*)"/)
 const statusJsonPath = path.resolve(`${__dirname}/../../status.json`)
 const useRaven = () => !!process.env.ACTION_HUB_RAVEN_DSN
 
@@ -100,6 +100,10 @@ export default class Server implements Hub.RouteBuilder {
     this.route("/", async (req, res) => {
       const request = Hub.ActionRequest.fromRequest(req)
       const version = request.lookerVersion ? request.lookerVersion : "5.5.0"
+
+      console.log("[pushkar] version: ", version);
+      console.log("[pushkar] this.actionList: ", this.actionList);
+
       if (!this.actionList[version]) {
         const actions = await Hub.allActions({ lookerVersion: request.lookerVersion })
         const response = {
@@ -244,14 +248,14 @@ export default class Server implements Hub.RouteBuilder {
         ravenTags = this.requestLog(req, res)
       }
 
-      const headerValue = req.header("authorization")
-      const tokenMatch = headerValue ? headerValue.match(TOKEN_REGEX) : undefined
-      if (!tokenMatch || !apiKey.validate(tokenMatch[1])) {
-        res.status(403)
-        res.json({success: false, error: "Invalid 'Authorization' header."})
-        this.logInfo(req, res, "Unauthorized request.")
-        return
-      }
+      // const headerValue = req.header("authorization")
+      // const tokenMatch = headerValue ? headerValue.match(TOKEN_REGEX) : undefined
+      // if (!tokenMatch || !apiKey.validate(tokenMatch[1])) {
+      //   res.status(403)
+      //   res.json({success: false, error: "Invalid 'Authorization' header."})
+      //   this.logInfo(req, res, "Unauthorized request.")
+      //   return
+      // }
 
       try {
         await fn(req, res)
