@@ -1,5 +1,6 @@
 import * as express from "express"
 import * as fs from "fs"
+import * as cors from "cors"
 import * as path from "path"
 import * as Raven from "raven"
 import * as winston from "winston"
@@ -85,6 +86,7 @@ export default class Server implements Hub.RouteBuilder {
   constructor() {
 
     this.app = express()
+    this.app.use(cors())
     this.app.use(express.json({limit: "250mb"}))
     this.app.use(expressWinston.logger({
       winstonInstance: winston,
